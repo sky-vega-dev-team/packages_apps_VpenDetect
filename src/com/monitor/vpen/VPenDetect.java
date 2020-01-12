@@ -7,6 +7,11 @@ import android.os.IBinder;
 import android.os.UEventObserver;
 import android.util.Log;
 
+import android.os.Build ;
+import android.content.Context ;
+import android.os.Vibrator;
+import android.os.VibrationEffect ;
+
 public class VPenDetect extends Service {
     private static final String LOG_TAG = "V-PEN";
     private static final String PEN_CONNECT = "ON";
@@ -47,6 +52,15 @@ public class VPenDetect extends Service {
                 } else if (PEN_DISCONNECT.equals(switchState)) {
                     Log.d(LOG_TAG, "DISCONNECTED");
                     setTouchMode(0x2);
+                }
+
+                Vibrator v = (Vibrator) getSystemService(Context. VIBRATOR_SERVICE ) ;
+                assert v != null;
+                if (Build.VERSION. SDK_INT >= Build.VERSION_CODES. O ) {
+                      v.vibrate(VibrationEffect. createOneShot ( 100 ,
+                      VibrationEffect. DEFAULT_AMPLITUDE )) ;
+                } else {
+                      v.vibrate( 100 ) ;
                 }
             }
         }
